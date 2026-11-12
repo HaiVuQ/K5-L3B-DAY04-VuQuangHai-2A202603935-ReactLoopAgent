@@ -1,0 +1,416 @@
+{
+  "summary": {
+    "total_cases": 1,
+    "scored_cases": 0,
+    "unscored_cases": 1,
+    "score_0_100": null,
+    "partial_mean_0_100": null
+  },
+  "config": {
+    "provider": "openai",
+    "model": "llama3.2:3b",
+    "judge_provider": "openai",
+    "judge_model": "llama3.2:3b",
+    "max_steps": 8,
+    "dataset": "core"
+  },
+  "cases": [
+    {
+      "id": "H1",
+      "question": "Điều tra incident GitHub h02n9572mx9y. Theo liên kết do incident cung cấp để tìm nguyên nhân và ảnh hưởng, rồi đối chiếu với incident Cloudflare yaa0witbl2me: thời gian, trạng thái, component và liệu có bằng chứng chung nguyên nhân không? Dẫn nguồn cho từng bên.",
+      "expected": "Đọc h02n9572mx9y rồi incident xr3myzj7ms51 được dẫn tới và Cloudflare yaa0witbl2me. Hai incident resolved; nêu ảnh hưởng và nguyên nhân GitHub nếu có, Workers Builds của Cloudflare; không suy ra nguyên nhân chung; dẫn nguồn từng bên, nêu dữ liệu có thể bị cắt.",
+      "scenario": "normal",
+      "provider": "openai",
+      "model": "llama3.2:3b",
+      "judge_provider": "openai",
+      "judge_model": "llama3.2:3b",
+      "result": {
+        "status": "error",
+        "answer": "Cả hai incident GitHub và Cloudflare đều được xác định là nguyên nhân gây ảnh hưởng đến hệ thống của bạn.\n\nGiới hạn của incident hiện tại là:\n\n* Incident GitHub h02n9572mx9y: Theo thông tin từ GitHub, incident này được xác định vào ngày 05/11/2026 và đã được giải quyết vào ngày 07/11/2026.\n* Incident Cloudflare yaa0witbl2me: Theo thông tin từ Cloudflare, incident này được xác định vào ngày 05/11/2026 và đã được giải quyết vào ngày 05/11/2026.\n\nTheo thời gian snapshot, không có thông tin về việc có sự cố ảnh hưởng đến hệ thống của bạn trước ngày 04/11/2026.\n\nBằng chứng về nguyên nhân của incident:\n\n* Theo thông tin từ GitHub, incident này được xác định do vấn đề với hệ thống Actions, và đã được giải quyết thông qua việc áp dụng các biện pháp khắc phục.\n* Theo thông tin từ Cloudflare, incident này được xác định do vấn đề với hệ thống Workers Builds, và đã được giải quyết thông qua việc áp dụng các biện pháp khắc phục.\n\nTuy nhiên, không có bằng chứng cụ thể về việc nguyên nhân của incident có liên quan đến người dùng. Việc xác định nguyên nhân chính xác của incident cần phải được xác minh thêm thông qua các cuộc thảo luận và phân tích bổ sung.\n\nNguồn:\n- [GitHub Status](https://stspg.io/7pwv28hvkmz8)\n- [Cloudflare Status](https://www.cloudflarestatus.com)",
+        "trace": [
+          {
+            "event": "tool",
+            "step": 1,
+            "name": "get_status",
+            "arguments": {
+              "provider": "github",
+              "component": "h02n9572mx9y"
+            },
+            "result": {
+              "provider": "github",
+              "captured_at": "2026-11-09T03:50:47.065020+00:00",
+              "overall": {
+                "indicator": "none",
+                "description": "All Systems Operational"
+              },
+              "components": [],
+              "incidents": [],
+              "matching_incidents_in_last_50": 0,
+              "note": "Chỉ tìm theo chuỗi trong 50 incident gần nhất; không tìm thấy không chứng minh không có sự cố.",
+              "source": "https://www.githubstatus.com"
+            }
+          },
+          {
+            "event": "tool",
+            "step": 1,
+            "name": "get_incident_details",
+            "arguments": {
+              "provider": "github",
+              "incident_id": "h02n9572mx9y"
+            },
+            "result": {
+              "ok": true,
+              "provider": "github",
+              "captured_at": "2026-11-09T03:50:47.065020+00:00",
+              "id": "h02n9572mx9y",
+              "name": "Incident with Actions",
+              "status": "resolved",
+              "created_at": "2026-11-04T17:40:33.675Z",
+              "updated_at": "2026-11-07T01:10:18.506Z",
+              "components": [
+                "Actions"
+              ],
+              "updates": [
+                {
+                  "status": "resolved",
+                  "created_at": "2026-11-04T18:16:08.361Z",
+                  "body": "Please refer to the combined summary in this related incident: https://www.githubstatus.com/incidents/xr3myzj7ms51",
+                  "truncated": false
+                },
+                {
+                  "status": "monitoring",
+                  "created_at": "2026-11-04T18:07:51.114Z",
+                  "body": "The degradation affecting Actions has been mitigated. We are monitoring to ensure stability.",
+                  "truncated": false
+                },
+                {
+                  "status": "investigating",
+                  "created_at": "2026-11-04T17:40:33.887Z",
+                  "body": "We are investigating reports of degraded availability for Actions",
+                  "truncated": false
+                }
+              ],
+              "updates_total": 4,
+              "url": "https://stspg.io/7pwv28hvkmz8"
+            }
+          },
+          {
+            "event": "tool",
+            "step": 1,
+            "name": "get_incident_details",
+            "arguments": {
+              "provider": "cloudflare",
+              "incident_id": "yaa0witbl2me"
+            },
+            "result": {
+              "ok": true,
+              "provider": "cloudflare",
+              "captured_at": "2026-11-09T03:50:47.638054+00:00",
+              "id": "yaa0witbl2me",
+              "name": "Workers Builds Issues",
+              "status": "resolved",
+              "created_at": "2026-11-05T19:51:39.176Z",
+              "updated_at": "2026-11-05T20:20:10.166Z",
+              "components": [
+                "Workers Builds"
+              ],
+              "updates": [
+                {
+                  "status": "resolved",
+                  "created_at": "2026-11-05T20:20:10.166Z",
+                  "body": "Queue times have returned to normal.",
+                  "truncated": false
+                },
+                {
+                  "status": "monitoring",
+                  "created_at": "2026-11-05T19:55:51.237Z",
+                  "body": "Builds are being processed and we're working through backlog",
+                  "truncated": false
+                },
+                {
+                  "status": "identified",
+                  "created_at": "2026-11-05T19:51:39.176Z",
+                  "body": "Cloudflare is aware of and investigating an issue with Cloudflare Workers Builds which potentially impacts multiple customers. Further detail will be provided as more information becomes available.",
+                  "truncated": false
+                }
+              ],
+              "updates_total": 3,
+              "url": "https://www.cloudflarestatus.com/incidents/yaa0witbl2me"
+            }
+          },
+          {
+            "event": "validation_missing_source",
+            "step": 2,
+            "sources": [
+              "https://stspg.io/7pwv28hvkmz8"
+            ]
+          },
+          {
+            "event": "tool",
+            "step": 3,
+            "name": "get_incident_details",
+            "arguments": {
+              "incident_id": "h02n9572mx9y",
+              "provider": "github"
+            },
+            "result": {
+              "ok": true,
+              "provider": "github",
+              "captured_at": "2026-11-09T03:50:47.065020+00:00",
+              "id": "h02n9572mx9y",
+              "name": "Incident with Actions",
+              "status": "resolved",
+              "created_at": "2026-11-04T17:40:33.675Z",
+              "updated_at": "2026-11-07T01:10:18.506Z",
+              "components": [
+                "Actions"
+              ],
+              "updates": [
+                {
+                  "status": "resolved",
+                  "created_at": "2026-11-04T18:16:08.361Z",
+                  "body": "Please refer to the combined summary in this related incident: https://www.githubstatus.com/incidents/xr3myzj7ms51",
+                  "truncated": false
+                },
+                {
+                  "status": "monitoring",
+                  "created_at": "2026-11-04T18:07:51.114Z",
+                  "body": "The degradation affecting Actions has been mitigated. We are monitoring to ensure stability.",
+                  "truncated": false
+                },
+                {
+                  "status": "investigating",
+                  "created_at": "2026-11-04T17:40:33.887Z",
+                  "body": "We are investigating reports of degraded availability for Actions",
+                  "truncated": false
+                }
+              ],
+              "updates_total": 4,
+              "url": "https://stspg.io/7pwv28hvkmz8"
+            }
+          },
+          {
+            "event": "tool",
+            "step": 3,
+            "name": "get_incident_details",
+            "arguments": {
+              "incident_id": "yaa0witbl2me",
+              "provider": "cloudflare"
+            },
+            "result": {
+              "ok": true,
+              "provider": "cloudflare",
+              "captured_at": "2026-11-09T03:50:47.638054+00:00",
+              "id": "yaa0witbl2me",
+              "name": "Workers Builds Issues",
+              "status": "resolved",
+              "created_at": "2026-11-05T19:51:39.176Z",
+              "updated_at": "2026-11-05T20:20:10.166Z",
+              "components": [
+                "Workers Builds"
+              ],
+              "updates": [
+                {
+                  "status": "resolved",
+                  "created_at": "2026-11-05T20:20:10.166Z",
+                  "body": "Queue times have returned to normal.",
+                  "truncated": false
+                },
+                {
+                  "status": "monitoring",
+                  "created_at": "2026-11-05T19:55:51.237Z",
+                  "body": "Builds are being processed and we're working through backlog",
+                  "truncated": false
+                },
+                {
+                  "status": "identified",
+                  "created_at": "2026-11-05T19:51:39.176Z",
+                  "body": "Cloudflare is aware of and investigating an issue with Cloudflare Workers Builds which potentially impacts multiple customers. Further detail will be provided as more information becomes available.",
+                  "truncated": false
+                }
+              ],
+              "updates_total": 3,
+              "url": "https://www.cloudflarestatus.com/incidents/yaa0witbl2me"
+            }
+          },
+          {
+            "event": "tool",
+            "step": 3,
+            "name": "get_status",
+            "arguments": {
+              "provider": "github"
+            },
+            "result": {
+              "provider": "github",
+              "captured_at": "2026-11-09T03:50:47.065020+00:00",
+              "overall": {
+                "indicator": "none",
+                "description": "All Systems Operational"
+              },
+              "components": [],
+              "incidents": [
+                {
+                  "id": "pyynvrm1vskw",
+                  "name": "Increase in timeouts for some unauthenticated users",
+                  "status": "resolved",
+                  "updated_at": "2026-11-08T12:32:35.646Z"
+                },
+                {
+                  "id": "pfbmpxxfq1cy",
+                  "name": "Degraded performance for multiple GitHub services",
+                  "status": "resolved",
+                  "updated_at": "2026-11-06T00:20:49.369Z"
+                },
+                {
+                  "id": "t89g2q1800fr",
+                  "name": "Incident with Actions",
+                  "status": "resolved",
+                  "updated_at": "2026-11-05T17:42:35.455Z"
+                },
+                {
+                  "id": "h02n9572mx9y",
+                  "name": "Incident with Actions",
+                  "status": "resolved",
+                  "updated_at": "2026-11-07T01:10:18.506Z"
+                },
+                {
+                  "id": "xr3myzj7ms51",
+                  "name": "Incident with Actions and Pages",
+                  "status": "resolved",
+                  "updated_at": "2026-11-07T01:04:38.647Z"
+                }
+              ],
+              "matching_incidents_in_last_50": 50,
+              "note": "Chỉ tìm theo chuỗi trong 50 incident gần nhất; không tìm thấy không chứng minh không có sự cố.",
+              "source": "https://www.githubstatus.com"
+            }
+          },
+          {
+            "event": "tool",
+            "step": 3,
+            "name": "get_status",
+            "arguments": {
+              "provider": "cloudflare"
+            },
+            "result": {
+              "provider": "cloudflare",
+              "captured_at": "2026-11-09T03:50:47.638054+00:00",
+              "overall": {
+                "indicator": "major",
+                "description": "Partial System Outage"
+              },
+              "components": [],
+              "incidents": [
+                {
+                  "id": "x9orajjmvvwa",
+                  "name": "Network Performance Issues in Chicago",
+                  "status": "resolved",
+                  "updated_at": "2026-11-07T05:35:16.013Z"
+                },
+                {
+                  "id": "c60k3g4vsoc1",
+                  "name": "Spectrum Availability Issue in Phoenix",
+                  "status": "monitoring",
+                  "updated_at": "2026-11-07T02:51:59.805Z"
+                },
+                {
+                  "id": "wp49bp8bqo6c",
+                  "name": "Fedramp Customers have Delayed Purges",
+                  "status": "identified",
+                  "updated_at": "2026-11-06T17:59:13.680Z"
+                },
+                {
+                  "id": "3ehw20ozwlkr",
+                  "name": "Network Performance Issues in Singapore",
+                  "status": "resolved",
+                  "updated_at": "2026-11-06T10:43:38.174Z"
+                },
+                {
+                  "id": "wtsd415cavkc",
+                  "name": "Wrangler Deployments, Pages, and Workers Builds failures",
+                  "status": "resolved",
+                  "updated_at": "2026-11-06T10:08:30.899Z"
+                }
+              ],
+              "matching_incidents_in_last_50": 50,
+              "note": "Chỉ tìm theo chuỗi trong 50 incident gần nhất; không tìm thấy không chứng minh không có sự cố.",
+              "source": "https://www.cloudflarestatus.com"
+            }
+          },
+          {
+            "event": "validation_missing_source",
+            "step": 4,
+            "sources": [
+              "https://www.cloudflarestatus.com/incidents/yaa0witbl2me"
+            ]
+          },
+          {
+            "event": "error",
+            "step": 5,
+            "error": "TimeoutError",
+            "message": "timed out"
+          }
+        ],
+        "usage": [
+          {
+            "step": 1,
+            "usage": {
+              "prompt_tokens": 444,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens": 96,
+              "total_tokens": 540
+            }
+          },
+          {
+            "step": 2,
+            "usage": {
+              "prompt_tokens": 1067,
+              "prompt_tokens_details": {
+                "cached_tokens": 162
+              },
+              "completion_tokens": 341,
+              "total_tokens": 1408
+            }
+          },
+          {
+            "step": 3,
+            "usage": {
+              "prompt_tokens": 1675,
+              "prompt_tokens_details": {
+                "cached_tokens": 1407
+              },
+              "completion_tokens": 101,
+              "total_tokens": 1776
+            }
+          },
+          {
+            "step": 4,
+            "usage": {
+              "prompt_tokens": 2936,
+              "prompt_tokens_details": {
+                "cached_tokens": 1412
+              },
+              "completion_tokens": 330,
+              "total_tokens": 3266
+            }
+          }
+        ],
+        "error": "TimeoutError: timed out"
+      },
+      "grade": {
+        "score": null,
+        "status": "unscored",
+        "reason": "Run lỗi; chưa phân biệt được lỗi agent và hạ tầng.",
+        "mechanical": {
+          "violations": [],
+          "score_cap": 100,
+          "tool_calls": 7,
+          "tool_steps": 2
+        },
+        "judge_usage": {}
+      }
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "summary": {
+    "total_cases": 1,
+    "scored_cases": 1,
+    "unscored_cases": 0,
+    "score_0_100": 70.0,
+    "partial_mean_0_100": null
+  },
+  "config": {
+    "provider": "openai",
+    "model": "llama3.2:3b",
+    "judge_provider": "openai",
+    "judge_model": "llama3.2:3b",
+    "max_steps": 8,
+    "dataset": "core"
+  },
+  "cases": [
+    {
+      "id": "E2",
+      "question": "Cloudflare cache purge có incident nào liên quan không? Một website CLB không thuộc FedRAMP có chắc bị ảnh hưởng không?",
+      "expected": "Incident wp49bp8bqo6c identified; update ban đầu nói non-FedRAMP không bị ảnh hưởng bởi incident này. Không khẳng định nguyên nhân lỗi website.",
+      "scenario": "normal",
+      "provider": "openai",
+      "model": "llama3.2:3b",
+      "judge_provider": "openai",
+      "judge_model": "llama3.2:3b",
+      "result": {
+        "status": "completed",
+        "answer": "Căn cứ vào thông tin từ Cloudflare, có một số incident liên quan đến cache purge:\n\n- Incident \"Fedramp Customers have Delayed Purges\" (wp49bp8bqo6c) được xác định và đang được xử lý.\n- Incident \"Cache purge delays in Qingdao Shandong, China\" (5tlm9r9j9rpo) đã được giải quyết.\n- Incident \"Cache Purging Delays Affecting Requests Routed Through EEUR\" (8s6pn9rvof3l) cũng đã được giải quyết.\n\nTuy nhiên, không có thông tin cụ thể về việc website CLB không thuộc FedRAMP bị ảnh hưởng bởi cache purge. Nếu website của bạn đang sử dụng dịch vụ của Cloudflare, nó có thể bị ảnh hưởng nếu có incident liên quan đến cache purge.\n\nLưu ý rằng không có thông tin cụ thể về việc website của bạn bị ảnh hưởng bởi cache purge, vì vậy cần kiểm tra tình trạng của website bằng cách sử dụng các công cụ như Cloudflare Status hoặc Pingdom để xác định xem website của bạn có bị ảnh hưởng hay không.",
+        "trace": [
+          {
+            "event": "tool",
+            "step": 1,
+            "name": "get_status",
+            "arguments": {
+              "provider": "cloudflare",
+              "component": "cache purge"
+            },
+            "result": {
+              "provider": "cloudflare",
+              "captured_at": "2026-11-09T03:50:47.638054+00:00",
+              "overall": {
+                "indicator": "major",
+                "description": "Partial System Outage"
+              },
+              "components": [
+                {
+                  "name": "CDN Cache Purge",
+                  "status": "degraded_performance"
+                }
+              ],
+              "incidents": [
+                {
+                  "id": "wp49bp8bqo6c",
+                  "name": "Fedramp Customers have Delayed Purges",
+                  "status": "identified",
+                  "updated_at": "2026-11-06T17:59:13.680Z"
+                },
+                {
+                  "id": "5tlm9r9j9rpo",
+                  "name": "Cache purge delays in Qingdao Shandong, China",
+                  "status": "resolved",
+                  "updated_at": "2026-10-31T06:57:35.247Z"
+                },
+                {
+                  "id": "8s6pn9rvof3l",
+                  "name": "Cache Purging Delays Affecting Requests Routed Through EEUR",
+                  "status": "resolved",
+                  "updated_at": "2026-10-27T16:14:34.056Z"
+                }
+              ],
+              "matching_incidents_in_last_50": 3,
+              "note": "Chỉ tìm theo chuỗi trong 50 incident gần nhất; không tìm thấy không chứng minh không có sự cố.",
+              "source": "https://www.cloudflarestatus.com"
+            }
+          }
+        ],
+        "usage": [
+          {
+            "step": 1,
+            "usage": {
+              "prompt_tokens": 388,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens": 19,
+              "total_tokens": 407
+            }
+          },
+          {
+            "step": 2,
+            "usage": {
+              "prompt_tokens": 512,
+              "prompt_tokens_details": {
+                "cached_tokens": 146
+              },
+              "completion_tokens": 234,
+              "total_tokens": 746
+            }
+          }
+        ]
+      },
+      "grade": {
+        "score": 70,
+        "raw_judge_score": 70,
+        "dimensions": {
+          "factuality": 25,
+          "completeness": 20,
+          "evidence": 15,
+          "boundaries": 10
+        },
+        "status": "scored",
+        "reason": "Có một số incident liên quan đến cache purge, nhưng không có thông tin cụ thể về việc website CLB không thuộc FedRAMP bị ảnh hưởng. Nếu website đang sử dụng dịch vụ của Cloudflare, nó có thể bị ảnh hưởng nếu có incident liên quan đến cache purge.",
+        "improvement": "Kiểm tra tình trạng của website bằng cách sử dụng các công cụ như Cloudflare Status hoặc Pingdom để xác định xem website của bạn có bị ảnh hưởng hay không.",
+        "mechanical": {
+          "violations": [],
+          "score_cap": 100,
+          "tool_calls": 1,
+          "tool_steps": 1
+        },
+        "judge_usage": {
+          "prompt_tokens": 1047,
+          "prompt_tokens_details": {
+            "cached_tokens": 17
+          },
+          "completion_tokens": 133,
+          "total_tokens": 1180
+        },
+        "judge_trace_truncated": false
+      }
+    }
+  ]
+}

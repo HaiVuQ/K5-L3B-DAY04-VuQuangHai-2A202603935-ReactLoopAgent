@@ -1,5 +1,7 @@
 """Tests offline; FakeProvider là test double, không đánh giá năng lực model."""
 import json
+import io
+import os
 import sys
 import unittest
 from pathlib import Path
@@ -7,7 +9,7 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from agent import run_agent
 from status_tools import StatusTools
-from providers import Provider
+from providers import Provider, post_json
 
 
 def tool_call(call_id, name, arguments):
@@ -80,6 +82,12 @@ class LoopTests(unittest.TestCase):
 
 
 class ProviderTests(unittest.TestCase):
+    @patch('providers.urllib.request.urlopen')
+    def test_local_endpoint_uses_longer_timeout(self, urlopen):
+        urlopen.return_value.__enter__.return_value = io.BytesIO(b'{}')
+        post_json('http://127.0.0.1:11434/v1/chat/completions', {}, {})
+        self.assertEqual(urlopen.call_args.kwargs['timeout'], 600)
+
     @patch.dict('os.environ', {'ANTHROPIC_API_KEY': 'test'})
     @patch('providers.post_json')
     def test_anthropic_groups_results(self, post):
@@ -92,6 +100,15 @@ class ProviderTests(unittest.TestCase):
         result = client.complete(messages, [])
         self.assertEqual(result['finish'], 'stop')
         self.assertEqual(len(post.call_args.args[2]['messages'][-1]['content']), 2)
+
+    @patch.dict('os.environ', {'API_KEY': 'test-key', 'API_ENDPOINT': 'https://example.test/v1'})
+    @patch('providers.post_json')
+    def test_openai_compatible_endpoint_uses_environment_key(self, post):
+        post.return_value = {'choices':[{'message':{'role':'assistant','content':'ok'},'finish_reason':'stop'}], 'usage':{}}
+        client = Provider('openai', 'test-model')
+        client.complete([{'role':'user','content':'hello'}], [])
+        self.assertEqual(post.call_args.args[0], 'https://example.test/v1/chat/completions')
+        self.assertEqual(post.call_args.args[1]['Authorization'].split()[-1], os.environ['API_KEY'])
 
 if __name__ == '__main__':
     unittest.main()

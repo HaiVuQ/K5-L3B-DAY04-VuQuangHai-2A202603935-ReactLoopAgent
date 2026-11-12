@@ -2,6 +2,7 @@
 import json
 import os
 import urllib.error
+import urllib.parse
 import urllib.request
 
 CONFIG = {
@@ -14,8 +15,9 @@ CONFIG = {
 
 def post_json(url, headers, payload):
     req = urllib.request.Request(url, data=json.dumps(payload).encode(), headers={'Content-Type': 'application/json', **headers})
+    timeout = 600 if urllib.parse.urlparse(url).hostname in {'localhost', '127.0.0.1', '::1'} else 60
     try:
-        with urllib.request.urlopen(req, timeout=60) as response:
+        with urllib.request.urlopen(req, timeout=timeout) as response:
             return json.load(response)
     except urllib.error.HTTPError as exc:
         # Do not print response bodies: they may contain account or request data.
@@ -38,8 +40,15 @@ class Provider:
         self.name, self.model = name, model
         key_name, self.url = CONFIG[name]
         self.key = os.getenv(key_name)
+        if name == 'openai':
+            self.key = self.key or os.getenv('API_KEY')
+            endpoint = os.getenv('API_ENDPOINT')
+            if endpoint:
+                endpoint = endpoint.rstrip('/')
+                self.url = endpoint if endpoint.endswith('/chat/completions') else f'{endpoint}/chat/completions'
         if not self.key:
-            raise ValueError(f'Thiếu {key_name}; xem README.md.')
+            missing = 'OPENAI_API_KEY hoặc API_KEY' if name == 'openai' else key_name
+            raise ValueError(f'Thiếu {missing}; xem README.md.')
 
     def complete(self, messages, schemas):
         if self.name == 'anthropic':
